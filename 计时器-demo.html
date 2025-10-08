@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计时器演示</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            font-size: 18px;
+            padding: 12px 24px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #005a9e;
+        }
+        button:active {
+            transform: translateY(1px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>计时器演示</h1>
+        <button id="counterButton">你点击了 0 次</button>
+    </div>
+
+    <script>
+        // 模拟React的useState功能
+        let count = 0;
+        
+        function updateButton() {
+            const button = document.getElementById('counterButton');
+            button.textContent = `你点击了 ${count} 次`;
+        }
+        
+        function handleClick() {
+            count = count + 1;
+            updateButton();
+        }
+        
+        // 添加点击事件监听器
+        document.getElementById('counterButton').addEventListener('click', handleClick);
+    </script>
+</body>
+</html>

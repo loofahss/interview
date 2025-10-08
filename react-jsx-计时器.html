@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React JSX 计时器演示</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            font-size: 16px;
+            padding: 10px 20px;
+            background-color: #61dafb;
+            color: #20232a;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        button:hover:not(:disabled) {
+            background-color: #21a9c7;
+            color: white;
+        }
+        button:active:not(:disabled) {
+            transform: translateY(1px);
+        }
+        button:disabled {
+            background-color: #ccc;
+            color: #666;
+            cursor: not-allowed;
+        }
+        .react-logo {
+            color: #61dafb;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- React CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX transformation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        // 倒计时组件
+        function Counter() {
+            const [count, setCount] = React.useState(10); // 从10秒开始倒计时
+            const [isActive, setIsActive] = React.useState(false);
+            
+            React.useEffect(() => {
+                let countDown = null;
+                if (isActive && count > 0) {
+                    countDown = setInterval(() => {
+                        setCount(c => {
+                            if (c <= 1) {
+                                setIsActive(false);
+                                return 0;
+                            }
+                            return c - 1;
+                        });
+                    }, 1000);
+                }
+                return () => {
+                    if (countDown) clearInterval(countDown);
+                };
+            }, [isActive, count]);
+
+            const startTimer = () => {
+                setIsActive(true);
+            };
+
+            const resetTimer = () => {
+                setIsActive(false);
+                setCount(10);
+            };
+
+            const pauseTimer = () => {
+                setIsActive(false);
+            };
+
+            return (
+                <div className="container">
+                    <h1 className="react-logo">⚛️ React 倒计时器</h1>
+                    <div style={{fontSize: '48px', margin: '20px 0', color: count === 0 ? '#ff4757' : '#2f3542'}}>
+                        {count === 0 ? '时间到！' : `${count} 秒`}
+                    </div>
+                    <div>
+                        <button onClick={startTimer} disabled={isActive || count === 0} style={{marginRight: '10px'}}>
+                            开始
+                        </button>
+                        <button onClick={pauseTimer} disabled={!isActive} style={{marginRight: '10px'}}>
+                            暂停
+                        </button>
+                        <button onClick={resetTimer}>
+                            重置
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+
+        // 渲染组件到页面
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Counter />);
+    </script>
+</body>
+</html>
