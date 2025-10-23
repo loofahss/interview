@@ -1,13 +1,13 @@
-// // function myNew(fn,...args){
-// //     //创建一个空对象
-// //     const obj={}
-// //     //将新对象的proto指向旧对象的prototype
-// //     obj._proto_=fn.prototype
-// //     //将构造函数的this绑定到新对象上并执行构造函数
-// //     const result=fn.apply(obj,args)
-// //     //如果构造函数返回值类型是object就返回原构造函数的返回值，否则返回新创建的对象
-// //     return result instanceof Object?result:obj
-// // }
+function myNew(fn,...args){
+    //创建一个空对象
+    const obj={}
+    //将新对象的proto指向旧对象的prototype
+    obj._proto_=fn.prototype
+    //将构造函数的this绑定到新对象上并执行构造函数
+    const result=fn.apply(obj,args)
+    //如果构造函数返回值类型是object就返回原构造函数的返回值，否则返回新创建的对象
+    return result instanceof Object?result:obj
+}
 
 // const a={
 //     "A":3,
