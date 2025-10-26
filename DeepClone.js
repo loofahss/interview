@@ -32,7 +32,7 @@ console.log(JSON.stringify(obj1))
 
 var _ = require('lodash');
 
-const lodashCloneResult = _.cloneDeep(obj);
+const lodashCloneResult = _.cloneDeep(obj1);
 
 console.log(lodashCloneResult) 
 
@@ -48,7 +48,7 @@ function deepClone(obj,map=new Map()){
     switch (currentTag) {
         case '[object Date]':
             return new Date(obj.getTime());
-        case '[object RegExp]':
+        case '[object RegExp]': // RegExp对象
             const regExpResult = new RegExp(obj.source,obj.flags);
             regExpResult.lastIndex=obj.lastIndex;
             return regExpResult;
@@ -76,21 +76,30 @@ function deepClone(obj,map=new Map()){
     }
     return copy
 }
-
-const obj = {
+// var和const,let声明的变量都会被提升，但只有var声明的变量会被初始化为undefined，
+// 而const和let声明的变量在提升后会进入“暂时性死区”，在声明之前不能访问，否则会抛出ReferenceError错误。
+var obj = {
     name: "张三",
     age: 18,
-    hobby: ["唱", "跳", "rap", "篮球",obj.name],
+    hobby: ["唱", "跳", "rap", "篮球"],
     time: new Date(),
-    arr: [1, 2, 3,obj],
+    arr: [1, 2, 3],
     set: new Set([1, 2, 3]),
     map: new Map([
         ["a", 1],
         ["b", 2],
     ]),
+    func: function() { console.log("hello"); },
+    regexp: /abc/g,
+    nested: {
+        key: "value",
+        arr: [obj],
+    },
 };
-
+// obj.nested.arr.push(obj);
 const deepCloneObj = deepClone(obj);
 
 console.log(obj)
 console.log(deepCloneObj)
+
+// 注：解决循环引用的关键就是存储这个对象的引用地址和对应的新对象地址，通过map来实现
